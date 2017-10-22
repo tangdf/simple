@@ -14,7 +14,7 @@ public class LogAspect {
 	@Around("execution(* lam.screen.SimpleClientCore.*(..))")
 	public void logEnhance(ProceedingJoinPoint jp) throws Throwable{
 		
-		logger.debug(jp.getSignature().getName());
+		logger.debug(jp.getSignature().getName()+"======");
 		jp.proceed();
 	}
 	
