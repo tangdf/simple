@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.com">
+<head>
+<meta charset="UTF-8"/>
+<title>thyme leaf for summer</title>
+<style type="text/css">
+#div1,#div3,#div4{
+	background-color: #553845;
+	width: 200px;
+	height: 80px;
+	border:4px solid;
+	border-radius:10px;
+}
+#button1{
+    background-color: #dd94cc; 
+ 
+    height: 20px; 
+    cursor:pointer; 
+}
+</style>
+<script type="text/javascript">
+function Testjs(){
+	alert("jswell")
+};
+</script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	
+$('#button3').click(function(){
+	alert("gogogo");
+});
+/*js中代码注释只能用java的 不能用html5*/
+$('#button1').click(function(){
+
+
+    $.ajax({
+        /*url 可以是根相对路径/second 也可以是如下的绝对路径*/
+        'url':'http://localhost:8080/second',
+        'dataType':'json',
+        'type':'get',
+        /*.html()与.text()对于纯文本json来说差不多 html可以解析标签*/
+        'success': function(json){
+          $('#div1').html(json.password);
+        }
+    });
+});
+
+
+$('#button2').click(function(){
+	var myurl="/vali?aaa="+new Date();
+	$('#div1').html(myurl);
+	$('#img1').attr("src",myurl);
+});
+
+$('#button5').click(function(){
+	var text=$('#text1').val();
+    $.ajax({
+        /*url 可以是根相对路径/second 也可以是如下的绝对路径*/
+        'url':'http://localhost:8080/ninth',
+        
+        'data':{
+        	"number":text,
+            "userName":"xwg"
+            
+        	},
+        
+        'type':'post',
+        /*.html()与.text()对于纯文本json来说差不多 html可以解析标签*/
+        'success': function(fuck){
+          $('#div3').html(fuck);
+        }
+    });
+});
+
+$("#button6").click(function(){
+	var input1=$("#input1").val();
+	var input2=$("#input2").val();
+	$ajax({
+		url:"/tenth",
+		type:"post",
+		data:{
+			money1:input1,
+			money2:input2
+		},
+		"success": function(foo){
+			$("#div4").html(foo);
+		}
+	});
+	
+    });
+
+/*end*/
+});   
+  
+
+ 
+	</script>
+	
+</head>
+<body>
+<button  type="button"  id="button1">此时相望不相闻</button>
+<button  type="button"  id="button2">愿逐月华重新获取验证码</button>
+<button  type="button"  id="button3">流照君测试jquery</button>
+<input type="button" id="button4" value="jstest" onclick="Testjs()"/>
+<div id="div1">
+</div>
+<div id="div2">
+<img src="/vali"  alt="vali" id="img1"/></div>
+<input type="text" id="text1" name="number"/>
+<button type="button" id= "button5">提交验证码</button>
+<div id="div3" ></div>
+<div >
+<input type="text" id="input1">
+<label for="input1">lowest_money</label>
+<input type="text" id="input1">
+<label for="input1">highest_money</label>
+<button type="button" id="button6">查询价格jpa</button>
+</div>
+<div id="div4"></div>
+</body>
+</html>
