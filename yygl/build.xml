@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="yygl" default="war" basedir=".">
+	<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+	<property file="build-dist.properties" />
+	<property name="project.lib" value="lib" />
+	<property name="classes.dir" value="classes" />
+
+ 	<!-- =================================================================== -->
+	<!-- Define the class path                                               -->
+	<!-- =================================================================== -->
+	<path id="project.class.path">
+		<path location="${project.lib.dir}/compile/jsp-api.jar" />
+		<path location="${project.lib.dir}/compile/servlet-api.jar" />
+
+		<fileset dir="${project.lib.dir}">
+			<include name="**/*.jar" />
+			<exclude name="**/jsp-api.jar" /> 
+			<exclude name="**/servlet-api.jar" />
+		</fileset>
+	</path> 
+	<!-- =================================================================== -->
+	<!-- Clean                                                               -->
+	<!-- =================================================================== -->
+	<target name="clean">
+		<echo>+---------------------------------------------------+</echo>
+		<echo>|                                                   |</echo>
+		<echo>| C L E A N  P R O J E C T                          |</echo>
+		<echo>|                                                   |</echo>
+		<echo>+---------------------------------------------------+</echo>
+		<delete includeemptydirs="true">
+			<fileset dir="${project.classes.dir}">
+				<include name="**/*" />
+			</fileset>
+		</delete>
+	</target>
+	<!-- =================================================================== -->
+	<!-- Initialize                                                          -->
+	<!-- =================================================================== -->
+	<target name="init" depends="clean">
+		
+	</target>
+	<!-- =================================================================== -->
+	<!-- Prepares the directory structure                                    -->
+	<!-- =================================================================== -->
+	<target name="prepare" depends="init">
+
+		<echo>+---------------------------------------------------+</echo>
+		<echo>|                                                   |</echo>
+		<echo>| P R E P A R E                                     |</echo>
+		<echo>|                                                   |</echo>
+		<echo>+---------------------------------------------------+</echo>
+
+		<mkdir dir="${project.dist.dir}" />
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- Compiles all the classes                                            -->
+	<!-- =================================================================== -->
+	<target name="compile">
+		<echo>+---------------------------------------------------+</echo>
+		<echo>|                                                   |</echo>
+		<echo>| C O M P I L I N G   S O U R C E S                 |</echo>
+		<echo>|                                                   |</echo>
+		<echo>+---------------------------------------------------+</echo>
+		<javac destdir="${project.classes.dir}" classpathref="project.class.path" target="1.6" source="1.6" nowarn="true" debug="true" deprecation="false" optimize="false" failonerror="true" encoding="UTF-8">
+			<src path="${project.coms.dir}" />
+			<src path="${project.core.dir}" />
+			<src path="${project.local.dir}" />
+			<src path="${project.utils.dir}" />
+		</javac>
+
+		<copy todir="${project.classes.dir}">
+			<fileset dir="${project.config.dir}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.config" /> 
+				<include name="**/*.cer" />
+			
+			</fileset>
+			<fileset dir="${project.core.dir}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.config" />
+				<include name="**/*.cer" />		
+			</fileset>
+			<fileset dir="${project.coms.dir}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.config" />
+				<include name="**/*.cer" />		
+			</fileset>
+			<fileset dir="${project.local.dir}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.config" />
+				<include name="**/*.cer" />		
+			</fileset>
+			<fileset dir="${project.utils.dir}">
+				<include name="**/*.xml" />
+				<include name="**/*.properties" />
+				<include name="**/*.config" />
+				<include name="**/*.cer" />		
+			</fileset>
+
+		</copy>
+	</target>
+
+
+	<!-- =================================================================== -->
+	<!-- War Build                                                           -->
+	<!-- =================================================================== -->
+	<target name="war" depends="prepare,compile" description="Build the web application archive">
+		<echo>+---------------------------------------------------+</echo>
+		<echo>|                                                   |</echo>
+		<echo>| W A R   F I L E   B U I L D                       |</echo>
+		<echo>|                                                   |</echo>
+		<echo>+---------------------------------------------------+</echo>
+
+		<delete file="${project.dist.dir}/${project.name}.war" failonerror="false" /> 
+		<copyfile dest="${project.classes.dir}/applicationContext.xml" src="${project.dir}/deploy/applicationContext.xml" forceoverwrite="true" />
+		
+		<war encoding="UTF-8" warfile="${project.dist.dir}/${project.name}.war" webxml="${project.web-inf.dir}/web.xml" basedir="${project.webapp.dir}">
+			<lib dir="${project.lib.common.dir}" />
+			<lib dir="${project.lib.jdbc.dir}" />
+			<lib dir="${project.lib.spring.dir}" /> 
+		</war> 
+		<copy file="${project.dist.dir}/${project.name}.war" todir="${project.web-deploy.dir}" />
+	</target>	
+</project>

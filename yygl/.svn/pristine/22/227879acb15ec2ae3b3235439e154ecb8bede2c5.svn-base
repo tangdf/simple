@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<beans xmlns="http://www.springframework.org/schema/beans"        
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"               
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">      
+	
+	<bean id="fastQueryService" parent="txProxy">
+		<property name="target" ref="fastQueryServiceImpl"></property>
+	</bean>
+	<bean id="fastQueryServiceImpl"
+		class="com.wb.qdyth.f1003.common.service.FastQueryServiceImpl" autowire="default">
+		<property name="commonService" ref="commonServiceImpl"></property>
+	</bean>
+</beans>

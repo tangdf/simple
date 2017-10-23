@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<beans xmlns="http://www.springframework.org/schema/beans"        
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"               
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">      
+	
+	<bean id="empService" parent="txProxy">
+		<property name="target" ref="empServiceImpl"></property>
+	</bean>
+	<bean id="empServiceImpl"
+		class="com.wb.qdyth.f1001.common.service.EmpServiceImpl" autowire="default">
+		<property name="commonService" ref="commonServiceImpl"></property>
+	</bean>
+	<bean id="printService" parent="txProxy">
+		<property name="target" ref="printServiceImpl"></property>
+	</bean>
+	<bean id="printServiceImpl"
+		class="com.wb.qdyth.f1001.common.service.PrintServiceImpl" autowire="default">
+		<property name="commonService" ref="commonServiceImpl"></property>
+	</bean>
+	<bean id="sbkService" parent="txProxy">
+		<property name="target" ref="sbkServiceImpl"></property>
+	</bean>
+	<bean id="sbkServiceImpl"
+		class="com.wb.qdyth.f1001.f100109.vs.SbkServiceImpl" autowire="default">
+		<property name="commonService" ref="commonServiceImpl"></property>
+	</bean>
+</beans>

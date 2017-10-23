@@ -1,0 +1,35 @@
+# These properties are only used when building the CuteFrameworks expanded from the distribution.
+project.name = yygl
+project.dir = .
+project.lib.dir = ${project.dir}/libs
+project.lib.common.dir = ${project.lib.dir}/common
+project.lib.jdbc.dir = ${project.lib.dir}/jdbc
+project.lib.spring.dir = ${project.lib.dir}/spring
+project.dist.dir = ${project.dir}/dist
+
+###########################################
+## WEB APPLICATION                       ##
+###########################################
+project.webapp.dir = ${project.dir}/webapp
+project.web-inf.dir = ${project.webapp.dir}/WEB-INF
+
+###########################################
+## CLASS DEFINE                          ##
+###########################################
+project.classes.dir = ${project.web-inf.dir}/classes
+
+###########################################
+## SOURCE CODE                           ##
+###########################################
+project.src.dir = ${project.dir}/src
+project.coms.dir = ${project.src.dir}/coms
+project.config.dir = ${project.src.dir}/config
+project.core.dir = ${project.src.dir}/core
+project.local.dir = ${project.src.dir}/local
+project.utils.dir = ${project.src.dir}/utils
+
+###########################################
+## DEPLOY                                ##
+###########################################
+project.web-deploy.dir = D:/aix/
+ 

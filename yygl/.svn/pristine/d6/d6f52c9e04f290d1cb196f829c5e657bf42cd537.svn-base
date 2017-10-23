@@ -1,0 +1,125 @@
+<beans xmlns="http://www.springframework.org/schema/beans"       
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"       
+	xmlns:mvc="http://www.springframework.org/schema/mvc"       
+	xmlns:p="http://www.springframework.org/schema/p"       
+	xmlns:context="http://www.springframework.org/schema/context"       
+	xmlns:aop="http://www.springframework.org/schema/aop"       
+	xmlns:tx="http://www.springframework.org/schema/tx"       
+	xsi:schemaLocation="http://www.springframework.org/schema/beans             
+	classpath:/org/springframework/beans/factory/xml/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/aop
+	classpath:/org/springframework/aop/config/spring-aop-3.2.xsd
+	http://www.springframework.org/schema/tx
+	classpath:/org/springframework/transaction/config/spring-tx-3.2.xsd
+	http://www.springframework.org/schema/mvc
+	classpath:/org/springframework/web/servlet/config/spring-mvc-3.2.xsd
+	http://www.springframework.org/schema/context
+	classpath:/org/springframework/context/config/spring-context-3.2.xsd">
+	
+	<!-- 启用Spring注释 -->
+	<context:annotation-config />
+	
+	<!-- 使Spring支持自动检测组件，如注解的Controller -->
+	<context:component-scan base-package="com.wb.qdyth" />
+	<!--启动spring mvc的注解功能,设置编码方式，防止乱码 -->
+	<bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+	</bean>
+	<bean id="handlerAdapter" class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">   
+	         <list>   
+	             <bean class="org.springframework.http.converter.StringHttpMessageConverter">   
+	                <property name="supportedMediaTypes">
+	                      <list>
+	                          <value>text/html;charset=UTF-8</value>   
+	                     </list>   
+	                </property>   
+	             </bean> 
+	             <!-- 启动JSON格式的配置 -->
+				<!--  <bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>application/json;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>-->
+	              <bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />  
+	         </list>
+	   </property>
+	</bean>
+	
+	<!--<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+			     <property name="supportedMediaTypes">  
+	                <list>  
+	                    <value>text/plain;charset=UTF-8</value>  
+	                    <value>text/html;charset=UTF-8</value>  
+	                </list>  
+	            </property>  
+			</bean>
+		</mvc:message-converters>
+    </mvc:annotation-driven>-->
+    
+    <!--srping mvc 拦截器 -->
+	<mvc:interceptors>
+		 <mvc:interceptor>
+			<!--  如果不配置或/**,将拦截所有的Controller,/*表示拦截第一层 -->
+			<mvc:mapping path="/**"/>
+			<!--不需要拦截的路径 -->
+			<mvc:exclude-mapping path="/login.action" />
+			<mvc:exclude-mapping path="/validationCode/**" />
+			<mvc:exclude-mapping path="/workspace/**" />
+			<mvc:exclude-mapping path="/public/**" />
+			<bean class="com.wb.login.interceptor.LoginInterceptor"></bean> 
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="com.wb.contain.interceptor.ObjectInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<bean class="com.wb.login.interceptor.BusinessContextInterceptor"></bean>
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/validationCode/**" />
+			<mvc:exclude-mapping path="/workspace/**" />
+			<bean class="com.wb.login.interceptor.UrlLogInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	
+	
+	
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<description>属性配置接入</description>
+		<property name="locations">
+			<list>
+				<value>classpath:application.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="multipartResolver"
+	    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <property name="maxUploadSize" value="54000000000000"/>
+	    <property name="maxInMemorySize" value="10240000" />
+	</bean>	
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"  
+		p:prefix="/pages/" p:suffix=".jsp" />
+	<!--登录组件-->
+	<import resource="classpath:/com/wb/login/loginContext.xml"/>
+	<!--公共Excel导出组件-->
+	<import resource="classpath:/com/wb/contain/containContext.xml"/>
+	<!--公共异常处理组件-->
+	<import resource="classpath:/com/wb/exceptions/exceptionContext.xml"/>
+	<!--公共业务组件-->
+	<import resource="classpath:/com/wb/qdyth/common/commonContext.xml"/>
+	<!--个人查询业务组件-->
+	<import resource="classpath:/com/wb/qdyth/f1001/common/f1001Context.xml"/>
+	<!--居民养老查询业务组件-->
+	<import resource="classpath:/com/wb/qdyth/f1002/common/f1002Context.xml"/>
+	<!--快速查询业务组件-->
+	<import resource="classpath:/com/wb/qdyth/f1003/common/f1003Context.xml"/>
+	<!--医疗保险组件-->
+	<import resource="classpath:/com/wb/qdyth/f2001/common/f2001Context.xml"/>
+</beans> 
